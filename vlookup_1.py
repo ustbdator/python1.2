@@ -30,11 +30,3 @@ X=df3.iloc[:,1]
 Y=df3.iloc[:,2]
 print(X)
 print(Y)
-plt.plot(X,Y,"r",linewidth=0.5,label="原图像")
-plt.plot(range(0,330),Y,"g",label="元数据")
-plt.xlabel("X")
-plt.ylabel("Y")
-plt.title("二维图像原来离散点输出")
-plt.legend()
-print(len(X))
-plt.show()
