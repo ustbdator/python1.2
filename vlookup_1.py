@@ -30,3 +30,16 @@ X=df3.iloc[:,1]
 Y=df3.iloc[:,2]
 print(X)
 print(Y)
+print("取df3的前2行")
+print(df3[0:2])#取df3的前2行
+print("打印df3的总行数")
+print(len(df3))
+print("打印df3的总列数")
+print(df3.columns.size)
+print("df3行索引")
+print(df3.index)
+print("df3列名")
+print(df3.columns)
+print(df3.dtypes)
+print(df3[df3['市场'].str.contains("广州")&df3['餐厅名称']>5])#将列数据字符串化然后筛选
+print(df3[df3['餐厅名称']>5])
