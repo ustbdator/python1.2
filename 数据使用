@@ -1,0 +1,28 @@
+import pandas as pd 
+import numpy as np
+df = pd.read_csv("file-1.csv")
+df1 = pd.read_csv("city_level.csv")
+df1.rename(columns={'city_id':'city'}, inplace=True)#登记表列名替换
+df1=df1.iloc[:,0:3]#取前三列
+df.cities = df.cities.apply(lambda x: x.replace("[","").replace("]","")).replace(" ","")
+#df1=df['cities'].str.split(',', expand=True)
+#pd.concat([df,df['cities'].str.split(',', expand=True)],axis=1,names=new_names)
+#df1=df['cities'].str.split(',',expand=True).stack
+df=df['cities'].str.split(',', expand=True).stack().reset_index(level=0).set_index('level_0').rename(columns={0:'city'}).join(df.drop('cities', axis=1))#按符号分割为多行
+#df=df.cities.str.split(',', expand=True).stack().reset_index(level=0).set_index('level_0').rename(columns={0:'city'}).join(df.drop('cities', axis=1))#按符号分割为多行
+df.drop_duplicates(subset=['city','csc_customer_id'],keep='first',inplace=True)#删除重复行
+#df.dropna(axis=0, how='any')
+df=df[~df['city'].isin([0])]#去0数据
+df=pd.DataFrame(df,dtype=np.float)#合并前准备，数据类型转换
+#def ab(df):
+#return ','.join(df.values)
+#df = df.groupby('csc_customer_id')['city'].apply(ab)
+#df = df.reset_index()
+
+df3 = df.merge(df1, how='left', on='city') #合并等级表
+df3=pd.pivot_table(df3,index=["csc_customer_id"],values=["city"],columns=["level"],aggfunc='count')
+print(df3)
+df3.to_csv('区域定向.csv', encoding='utf_8_sig',sep=',', header=True, index=True)
+#df3.info()
+#df.info()
+#df1.info()
