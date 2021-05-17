@@ -1,0 +1,30 @@
+# -*- coding:utf-8 -*-
+"""
+@author:Corwien
+@file:merge_excel_priceupdate.py
+@time:2021/5/1119:33
+"""
+import numpy as np
+import pandas as pd
+import os
+
+#文件路径
+file_dir=r'D:\毛豆新车\采购\分析\零采聚类\融合文件夹'
+#创建新表格名称
+merge_file=file_dir+'\\merge.xlsx'
+#找到文件下所有文档，返回列表，创建新的融合df
+file_list=os.listdir(file_dir)
+new_list=[]
+#遍历文件的读取
+for file in file_list:
+#重构文件路径
+    file_path=os.path.join(file_dir,file)
+#将excel存为dataframe
+    df=pd.read_excel(file_path)
+#保存到新列表中
+    new_list.append(df)
+
+#将新列表中的df合并
+df_all = pd.concat(new_list)
+#写入文件
+df_all.to_excel(merge_file,index=False)
