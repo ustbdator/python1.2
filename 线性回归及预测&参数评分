@@ -1,0 +1,36 @@
+# -*- coding:utf-8 -*-
+"""
+@author:Corwien
+@file:最小二乘线性回归.py
+@time:2021/5/1716:34
+"""
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.linear_model import LinearRegression
+from sklearn.model_selection import cross_val_score
+
+#模拟数据
+x = np.linspace(0, 10, 50)
+noise = np.random.uniform(-2,2,size=50)
+y = 5 * x + 6 + noise
+#创建对象
+liner = LinearRegression()
+#拟合模型
+a=liner.fit(np.reshape(x,(-1,1)),np.reshape(y,(-1,1)))
+print(a)
+#拟合必须转为矩阵多加[]
+print(a.predict([[5]]))
+#预测
+y_pred = a.predict(np.reshape(x,(-1,1)))
+plt.figure(figsize=(5,5))
+plt.scatter(x,y)
+plt.plot(x,y_pred, color="r")
+plt.show()
+print(a.coef_)
+print(a.intercept_)
+
+#交叉检验，cv=5表示把数据分为5份，每次取4份作为训练集，1份作为测试集
+#MAE=对应的scoring参数为’neg_mean_absolute_error’
+#MSE=对应的scoring参数为’neg_mean_squared_error’获得评分，评分约高模型越好
+score=cross_val_score(a,np.reshape(x,(-1,1)),np.reshape(y,(-1,1)),cv=5,scoring='neg_mean_absolute_error')
+print(score)
